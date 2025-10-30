@@ -12,6 +12,7 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
   const [formData, setFormData] = useState<ItemFormData>({
     name: '',
     status: 'todo',
+    description: '',
   });
   const [errors, setErrors] = useState<{ name?: string }>({});
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,7 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
       setFormData({
         name: item.name,
         status: item.status,
+        description: item.description || '',
       });
     }
   }, [item]);
@@ -30,9 +32,9 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
     const newErrors: { name?: string } = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Nome é obrigatório';
+      newErrors.name = 'Name is required';
     } else if (formData.name.trim().length < 3) {
-      newErrors.name = 'Nome deve ter pelo menos 3 caracteres';
+      newErrors.name = 'Name must be at least 3 characters';
     }
 
     setErrors(newErrors);
@@ -50,16 +52,16 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
     try {
       setLoading(true);
       await onSubmit(formData);
-      setFormData({ name: '', status: 'todo' });
+      setFormData({ name: '', status: 'todo', description: '' });
       setErrors({});
     } catch (err) {
-      setSubmitError(err instanceof Error ? err.message : 'Erro ao salvar item');
+      setSubmitError(err instanceof Error ? err.message : 'Error saving item');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof typeof errors]) {
@@ -70,8 +72,8 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
   return (
     <div className="form-overlay">
       <div className="form-container">
-        <h2>{item ? 'Editar Item' : 'Novo Item'}</h2>
-        
+        <h2>{item ? 'Edit Item' : 'New Item'}</h2>
+
         {submitError && (
           <div className="form-error">
             ❌ {submitError}
@@ -80,7 +82,7 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Nome *</label>
+            <label htmlFor="name">Name *</label>
             <input
               type="text"
               id="name"
@@ -89,13 +91,13 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
               onChange={handleChange}
               className={errors.name ? 'input-error' : ''}
               disabled={loading}
-              placeholder="Digite o nome do item"
+              placeholder="Enter item name"
             />
             {errors.name && <span className="error-text">{errors.name}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="status">Status *</label>
+            <label htmlFor="status">Status</label>
             <select
               id="status"
               name="status"
@@ -103,10 +105,23 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
               onChange={handleChange}
               disabled={loading}
             >
-              <option value="todo">A Fazer</option>
-              <option value="doing">Fazendo</option>
-              <option value="done">Concluído</option>
+              <option value="todo">Todo</option>
+              <option value="doing">Doing</option>
+              <option value="done">Done</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              disabled={loading}
+              placeholder="Enter item description"
+              rows={4}
+            />
           </div>
 
           <div className="form-actions">
@@ -116,14 +131,14 @@ export const ItemForm: React.FC<ItemFormProps> = ({ item, onSubmit, onCancel }) 
               className="btn btn-secondary"
               disabled={loading}
             >
-              Cancelar
+              Cancel
             </button>
             <button
               type="submit"
               className="btn btn-primary"
               disabled={loading}
             >
-              {loading ? 'Salvando...' : 'Salvar'}
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>

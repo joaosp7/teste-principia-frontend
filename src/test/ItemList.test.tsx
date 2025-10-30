@@ -9,23 +9,28 @@ describe('ItemList', () => {
       id: '1',
       name: 'Item 1',
       status: 'todo',
+      description: 'Description 1',
       createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z',
     },
     {
       id: '2',
       name: 'Item 2',
       status: 'doing',
+      description: 'Description 2',
       createdAt: '2024-01-02T00:00:00Z',
+      updatedAt: '2024-01-02T00:00:00Z',
     },
     {
       id: '3',
       name: 'Item 3',
       status: 'done',
       createdAt: '2024-01-03T00:00:00Z',
+      updatedAt: '2024-01-03T00:00:00Z',
     },
   ];
 
-  it('deve exibir loading quando loading é true', () => {
+  it('should display loading when loading is true', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -39,14 +44,14 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    expect(screen.getByText('Carregando items...')).toBeInTheDocument();
+    expect(screen.getByText('Loading items...')).toBeInTheDocument();
   });
 
-  it('deve exibir mensagem de erro quando error não é null', () => {
+  it('should display error message when error is not null', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -55,19 +60,19 @@ describe('ItemList', () => {
       <ItemList
         items={[]}
         loading={false}
-        error="Erro ao carregar dados"
+        error="Error loading data"
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    expect(screen.getByText(/Erro ao carregar dados/i)).toBeInTheDocument();
+    expect(screen.getByText(/Error loading data/i)).toBeInTheDocument();
   });
 
-  it('deve exibir mensagem de lista vazia quando não há items', () => {
+  it('should display empty list message when there are no items', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -81,14 +86,14 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    expect(screen.getByText(/Nenhum item encontrado/i)).toBeInTheDocument();
+    expect(screen.getByText(/No items found/i)).toBeInTheDocument();
   });
 
-  it('deve renderizar a lista de items corretamente', () => {
+  it('should render the items list correctly', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -102,7 +107,7 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
@@ -111,7 +116,7 @@ describe('ItemList', () => {
     expect(screen.getByText('Item 3')).toBeInTheDocument();
   });
 
-  it('deve chamar onEdit ao clicar no botão de editar', () => {
+  it('should call onEdit when clicking the edit button', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -125,17 +130,17 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    const editButtons = screen.getAllByTitle('Editar');
+    const editButtons = screen.getAllByTitle('Edit');
     fireEvent.click(editButtons[0]);
 
     expect(mockOnEdit).toHaveBeenCalledWith(mockItems[0]);
   });
 
-  it('deve chamar onDelete ao clicar no botão de excluir', () => {
+  it('should call onDelete when clicking the delete button', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -149,17 +154,17 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    const deleteButtons = screen.getAllByTitle('Excluir');
+    const deleteButtons = screen.getAllByTitle('Delete');
     fireEvent.click(deleteButtons[0]);
 
     expect(mockOnDelete).toHaveBeenCalledWith('1');
   });
 
-  it('deve chamar onSort ao clicar no cabeçalho da coluna', () => {
+  it('should call onSort when clicking the column header', () => {
     const mockOnEdit = vi.fn();
     const mockOnDelete = vi.fn();
     const mockOnSort = vi.fn();
@@ -173,11 +178,11 @@ describe('ItemList', () => {
         onDelete={mockOnDelete}
         onSort={mockOnSort}
         sortField="createdAt"
-        sortOrder="asc"
+        sortOrder="ASC"
       />
     );
 
-    const nameHeader = screen.getByText(/Nome/i);
+    const nameHeader = screen.getByText(/Name/i);
     fireEvent.click(nameHeader);
 
     expect(mockOnSort).toHaveBeenCalledWith('name');

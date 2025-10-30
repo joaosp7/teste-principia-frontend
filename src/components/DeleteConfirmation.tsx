@@ -18,26 +18,26 @@ export const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-icon">⚠️</div>
-        <h2>Confirmar Exclusão</h2>
+        <h2>Confirm Deletion</h2>
         <p>
-          Tem certeza que deseja excluir o item <strong>"{itemName}"</strong>?
+          Are you sure you want to delete the item <strong>"{itemName}"</strong>?
         </p>
-        <p className="warning-text">Esta ação não pode ser desfeita.</p>
-        
+        <p className="warning-text">This action cannot be undone.</p>
+
         <div className="modal-actions">
           <button
             onClick={onCancel}
             className="btn btn-secondary"
             disabled={loading}
           >
-            Cancelar
+            Cancel
           </button>
           <button
             onClick={onConfirm}
             className="btn btn-danger"
             disabled={loading}
           >
-            {loading ? 'Excluindo...' : 'Excluir'}
+            {loading ? 'Deleting...' : 'Delete'}
           </button>
         </div>
       </div>

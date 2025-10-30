@@ -7,6 +7,7 @@
   justify-content: center;
   padding: 3rem;
   text-align: center;
+  color: #333;
 }
 
 .spinner {
@@ -50,6 +51,12 @@
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #dee2e6;
+  color: #333;
+}
+
+.items-table th {
+  font-weight: 600;
+  color: #2c3e50;
 }
 
 .items-table th.sortable {
@@ -64,6 +71,15 @@
 
 .items-table tbody tr:hover {
   background-color: #f8f9fa;
+}
+
+.description-cell {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #495057;
+  font-size: 0.9rem;
 }
 
 .status-badge {

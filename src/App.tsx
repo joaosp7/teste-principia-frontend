@@ -82,7 +82,7 @@ function App() {
       setDeletingItem(null);
       refetch();
     } catch (err) {
-      alert('Erro ao excluir item');
+      alert('Error deleting item');
     } finally {
       setDeleteLoading(false);
     }
@@ -97,7 +97,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>📋 Gerenciador de Items</h1>
+        <h1>📋 Items Manager</h1>
       </header>
 
       <main className="app-main">
@@ -105,14 +105,14 @@ function App() {
           <div className="search-container">
             <input
               type="text"
-              placeholder="🔍 Buscar por nome..."
+              placeholder="🔍 Search by name..."
               value={queryParams.search}
               onChange={handleSearch}
               className="search-input"
             />
           </div>
           <button onClick={handleCreate} className="btn btn-primary">
-            ➕ Novo Item
+            ➕ New Item
           </button>
         </div>
 
@@ -134,17 +134,17 @@ function App() {
               disabled={queryParams.page === 1}
               className="btn btn-secondary"
             >
-              ← Anterior
+              ← Previous
             </button>
             <span className="pagination-info">
-              Página {queryParams.page} de {totalPages} ({total} items)
+              Page {queryParams.page} of {totalPages} ({total} items)
             </span>
             <button
               onClick={() => handlePageChange(queryParams.page! + 1)}
               disabled={queryParams.page === totalPages}
               className="btn btn-secondary"
             >
-              Próxima →
+              Next →
             </button>
           </div>
         )}

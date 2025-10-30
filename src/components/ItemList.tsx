@@ -29,23 +29,29 @@ export const ItemList: React.FC<ItemListProps> = ({
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('pt-BR');
+    return new Date(dateString).toISOString().split('T')[0];
   };
 
   const getStatusLabel = (status: string) => {
     const labels = {
-      todo: 'A Fazer',
-      doing: 'Fazendo',
-      done: 'Concluído',
+      todo: 'Todo',
+      doing: 'Doing',
+      done: 'Done',
     };
     return labels[status as keyof typeof labels] || status;
+  };
+
+  const truncateText = (text: string | undefined, maxLength: number) => {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
   };
 
   if (loading) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p>Carregando items...</p>
+        <p>Loading items...</p>
       </div>
     );
   }
@@ -61,7 +67,7 @@ export const ItemList: React.FC<ItemListProps> = ({
   if (items.length === 0) {
     return (
       <div className="empty-container">
-        <p>📭 Nenhum item encontrado</p>
+        <p>📭 No items found</p>
       </div>
     );
   }
@@ -72,15 +78,17 @@ export const ItemList: React.FC<ItemListProps> = ({
         <thead>
           <tr>
             <th onClick={() => onSort('name')} className="sortable">
-              Nome {getSortIcon('name')}
+              Name {getSortIcon('name')}
             </th>
-            <th onClick={() => onSort('status')} className="sortable">
-              Status {getSortIcon('status')}
-            </th>
+            <th>Status</th>
+            <th>Description</th>
             <th onClick={() => onSort('createdAt')} className="sortable">
-              Data de Criação {getSortIcon('createdAt')}
+              Created At {getSortIcon('createdAt')}
             </th>
-            <th>Ações</th>
+            <th onClick={() => onSort('updatedAt')} className="sortable">
+              Updated At {getSortIcon('updatedAt')}
+            </th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -92,20 +100,24 @@ export const ItemList: React.FC<ItemListProps> = ({
                   {getStatusLabel(item.status)}
                 </span>
               </td>
+              <td className="description-cell" title={item.description}>
+                {truncateText(item.description, 50)}
+              </td>
               <td>{formatDate(item.createdAt)}</td>
+              <td>{formatDate(item.updatedAt)}</td>
               <td>
                 <div className="action-buttons">
                   <button
                     onClick={() => onEdit(item)}
                     className="btn btn-edit"
-                    title="Editar"
+                    title="Edit"
                   >
                     ✏️
                   </button>
                   <button
                     onClick={() => onDelete(item.id)}
                     className="btn btn-delete"
-                    title="Excluir"
+                    title="Delete"
                   >
                     🗑️
                   </button>
