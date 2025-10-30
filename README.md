@@ -33,13 +33,3 @@ A aplicação estará disponível em `http://localhost:5173`
 npm test
 ```
 
-### Executar testes com UI
-```bash
-npm run test:ui
-```
-
-### Cobertura de testes
-```bash
-npm run test:coverage
-```
-
